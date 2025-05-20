@@ -1,7 +1,7 @@
 package com.windowsXP.crucigrama;
 
 import java.util.Scanner;
-
+//todo este cambio lo hizo victor
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
