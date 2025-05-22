@@ -1,9 +1,9 @@
 package com.windowsXP.crucigrama;
 
 public class Crucigrama {
-    private char[][] matriz;
+    char[][] matriz;
     private int tamaño;
-    private String[] palabras;
+    String[] palabras;
 
     public Crucigrama(String[] palabras, int tamanito) {
         if(tamanito < 10) {
@@ -132,5 +132,13 @@ public class Crucigrama {
             }
             System.out.println();
         }
+    }
+
+    public int getTamaño() {
+        return tamaño;
+    }
+
+    public void setTamaño(int tamaño) {
+        this.tamaño = tamaño;
     }
 }

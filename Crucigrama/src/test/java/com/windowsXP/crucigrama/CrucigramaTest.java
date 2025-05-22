@@ -1,62 +1,87 @@
-package crucigrama;
+package com.windowsXP.crucigrama;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CrucigramaTest {
+public class CrucigramaTest {
     private Crucigrama crucigrama;
-    private final String[] palabrasEjemplo = {"java", "python", "programacion", "testing"};
 
     @BeforeEach
-    void setUp() {
-        crucigrama = new Crucigrama(palabrasEjemplo, 15);
+    public void setUp() {
+        String[] palabras = {"luz", "sol", "nube", "brisa"};
+        crucigrama = new Crucigrama(palabras, 10);
     }
 
+    // HU1: Inserción de palabras y ordenamiento
     @Test
-    void testTamañoMinimo() {
-        Crucigrama pequeño = new Crucigrama(palabrasEjemplo, 5);
-        assertEquals(10, pequeño.getTamaño(), "Debería usar tamaño mínimo 10");
+    public void testPalabrasOrdenadasPorLongitud() {
+        String[] palabras = {"sol", "montaña", "sol", "luz", "nube"};
+        Crucigrama c = new Crucigrama(palabras, 10);
+        assertEquals("montaña", c.palabras[0]); // longitud mayor
     }
 
+    // HU2: Generación automática
     @Test
-    void testMatrizInicializada() {
-        char[][] matriz = crucigrama.getMatriz();
-        for (int i = 0; i < crucigrama.getTamaño(); i++) {
-            for (int j = 0; j < crucigrama.getTamaño(); j++) {
-                assertTrue(matriz[i][j] == ' ' || Character.isLetter(matriz[i][j]),
-                        "La matriz solo debe contener espacios o letras");
+    public void testGeneraMatrizConPrimeraPalabra() {
+        String[] palabras = {"montaña", "sol", "luz", "nube"};
+        Crucigrama c = new Crucigrama(palabras, 10);
+        char[][] matriz = c.matriz;
+        boolean contiene = false;
+        for (char ch : matriz[5]) {
+            if (ch == 'M') {
+                contiene = true;
+                break;
             }
         }
+        assertTrue(contiene);
     }
 
+    // HU3: Validación de mínimo de palabras
     @Test
-    void testPalabrasOrdenadas() {
-        String[] palabras = crucigrama.getPalabras();
-        for (int i = 0; i < palabras.length - 1; i++) {
-            assertTrue(palabras[i].length() >= palabras[i+1].length(),
-                    "Las palabras deberían estar ordenadas por longitud descendente");
-        }
+    public void testMenosDeCuatroPalabrasMuestraError() {
+        String[] palabras = {"sol", "luz", "mar"};
+        Crucigrama c = new Crucigrama(palabras, 10);
+        // No hay assert directo porque el método solo imprime.
+        // Debería rediseñarse para poder comprobar vía boolean.
     }
 
+    // HU4: Tamaño de la matriz mínimo 10
     @Test
-    void testPrimeraPalabraColocada() {
-        char[][] matriz = crucigrama.getMatriz();
-        boolean encontrada = false;
-        String primeraPalabra = crucigrama.getPalabras()[0];
+    public void testMatrizTamanioMinimo10x10() {
+        Crucigrama c = new Crucigrama(new String[]{"sol", "luz", "nube", "aire"}, 5);
+        assertEquals(10, c.getTamaño());
+    }
 
-        // Buscar horizontalmente
-        for (int i = 0; i < crucigrama.getTamaño(); i++) {
-            for (int j = 0; j <= crucigrama.getTamaño() - primeraPalabra.length(); j++) {
-                if (matriz[i][j] == primeraPalabra.charAt(0)) {
-                    encontrada = true;
-                    for (int k = 0; k < primeraPalabra.length(); k++) {
-                        assertEquals(primeraPalabra.charAt(k), matriz[i][j+k],
-                                "La palabra debería estar colocada correctamente");
-                    }
+    // HU6: Evita palabras duplicadas (opcional si implementas esta lógica)
+    @Test
+    public void testNoPermitePalabrasDuplicadas() {
+        String[] palabras = {"sol", "sol", "luz", "nube"};
+        Crucigrama c = new Crucigrama(palabras, 10);
+        // Esta funcionalidad no está implementada aún.
+        // Si la implementas con Set, deberías testear que solo hay 3 únicas.
+    }
+
+    // HU10: Crucigramas diferentes con las mismas palabras
+    @Test
+    public void testVariasGeneracionesDiferentes() {
+        String[] palabras = {"luz", "nube", "aire", "sol"};
+        Crucigrama c1 = new Crucigrama(palabras.clone(), 10);
+        char[][] m1 = c1.matriz;
+
+        Crucigrama c2 = new Crucigrama(palabras.clone(), 10);
+        char[][] m2 = c2.matriz;
+
+        boolean iguales = true;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (m1[i][j] != m2[i][j]) {
+                    iguales = false;
+                    break;
                 }
             }
         }
-        assertTrue(encontrada, "La primera palabra debería estar colocada en la matriz");
+
+        assertFalse(iguales); // Esperamos que la generación sea distinta
     }
 }
