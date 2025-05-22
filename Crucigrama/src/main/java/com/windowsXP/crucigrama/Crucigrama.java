@@ -15,7 +15,7 @@ public class Crucigrama {
         this.matriz = new char[tamaño][tamaño];
         this.palabras = palabras;
         inicializarMatriz();
-        generarCrucigrama();
+        generarCrucigrama   ();
     }
 
     private void inicializarMatriz() {
