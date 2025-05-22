@@ -1,5 +1,5 @@
 package com.windowsXP.crucigrama;
-
+//Vicente gay
 import java.util.Scanner;
 //todo este cambio lo hizo victor
 public class Main {
